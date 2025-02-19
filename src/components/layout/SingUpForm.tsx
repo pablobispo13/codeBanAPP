@@ -11,7 +11,9 @@ interface SingUpFormType {
     qrCodeReadCallback?: () => void;
     setQrCodeReadCallback?: (value: boolean) => void;
     setQrCodeValueCallback?: (value: string) => void;
+    setCopyQRCodeValueCallback?: (value: string) => void;
     setSingUpValuesCallback?: (value: { name?: string, email?: string }) => void;
+    setLoadingCallback?: (value: boolean) => void;
 }
 
 export const SingUpForm: React.FC<SingUpFormType> = ({
@@ -19,7 +21,9 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
     qrCodeReadCallback = () => { },
     setQrCodeReadCallback = () => { },
     setQrCodeValueCallback = () => { },
-    setSingUpValuesCallback = () => { }
+    setCopyQRCodeValueCallback = () => { },
+    setSingUpValuesCallback = () => { },
+    setLoadingCallback = () => { }
 }) => {
     return (
         <Container>
@@ -36,7 +40,10 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
                         .oneOf([Yup.ref("password")], "As senhas devem coincidir")
                         .required("Confirmação de senha é obrigatória"),
                 })}
+
+
                 onSubmit={(values) => {
+                    setLoadingCallback(true)
                     let newValues = {
                         name: values.name,
                         email: values.email,
@@ -46,6 +53,7 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
                         .then((response) => {
                             if (response.data.success == false) {
                                 toast.error(response.data.message)
+                                setLoadingCallback(false)
                             } else {
                                 setSingUpValuesCallback({
                                     name: values.name,
@@ -53,15 +61,22 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
                                 })
                                 toast.success(response.data.message)
                                 setQrCodeValueCallback(response.data.data.qr_code_url)
+                                setCopyQRCodeValueCallback(response.data.data.qrcode_url_value)
                                 setQrCodeReadCallback(true)
                                 qrCodeReadCallback()
-
+                                setLoadingCallback(false)
                             }
                         })
                 }}
             >
                 {({ errors, touched }) => (
-                    <Form>
+                    <Form
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                formRef.current.submitForm();
+                            }
+                        }}
+                    >
                         <Field
                             as={TextField}
                             label="Nome"

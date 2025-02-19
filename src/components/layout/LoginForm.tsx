@@ -10,12 +10,14 @@ interface LoginFormType {
     formRef: any,
     qrCodeReadCallback?: () => void;
     setSingUpValuesCallback?: (value: { name?: string, email?: string }) => void;
+    setLoadingCallback?: (value: boolean) => void;
 }
 
 export const LoginForm: React.FC<LoginFormType> = ({
     formRef,
     qrCodeReadCallback = () => { },
     setSingUpValuesCallback = () => { },
+    setLoadingCallback = () => { }
 }) => {
     return (
         <Container>
@@ -30,6 +32,7 @@ export const LoginForm: React.FC<LoginFormType> = ({
 
                 })}
                 onSubmit={(values) => {
+                    setLoadingCallback(true)
                     let newValues = {
                         email: values.email,
                         password: sha256(values.password).toString()
@@ -38,18 +41,26 @@ export const LoginForm: React.FC<LoginFormType> = ({
                         .then((response) => {
                             if (response.data.success == false) {
                                 toast.error(response.data.message)
+                                setLoadingCallback(false)
                             } else {
                                 toast.info(response.data.message)
                                 setSingUpValuesCallback({
                                     email: values.email,
                                 })
                                 qrCodeReadCallback()
+                                setLoadingCallback(false)
                             }
                         })
                 }}
             >
                 {({ errors, touched }) => (
-                    <Form>
+                    <Form
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                formRef.current.submitForm();
+                            }
+                        }}
+                    >
                         <Field
                             as={TextField}
                             label="E-mail"

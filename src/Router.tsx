@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom
 import AnimatedCursor from "react-animated-cursor";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "@mui/material";
-import { LoginSingUpBackground } from "./components/pages/content/LoginSingUpBackground";
+import { LoginSingUpBackground } from "./components/pages/LoginSingUpBackground/LoginSingUpBackground";
 import { NavBar } from "./components/layout/NavBar";
 import { AdminPage } from "./components/pages/AdminPage";
 

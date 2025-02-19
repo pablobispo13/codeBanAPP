@@ -13,7 +13,7 @@ export const LoginSingUp = () => {
     const formRef = useRef<FormikProps<initialValuesType> | null>(null);
     const loginRef = useRef<FormikProps<initialValuesType> | null>(null);
     const qrCodeRef = useRef<FormikProps<{ code: string }> | null>(null);
-    const [disabledButton, setDisabledButton] = useState(false);
+    const [loadingButton, setLoadingButton] = useState(false);
 
     // LoginSingUp
     const [loginSingUp, setLoginSingUp] = useState<"login" | "singup">("login");
@@ -22,6 +22,8 @@ export const LoginSingUp = () => {
     const [qrCodeRead, setQrCodeRead] = useState(false);
     const [qrCodeValue, setQrCodeValue] = useState("");
     const [singUpValues, setSingUpValues] = useState<{ name?: string, email?: string }>({});
+    const [copyQRCodeValue, setCopyQRCodeValue] = useState("");
+
     return (
         <Fade in={true} style={{ transformOrigin: "0 0 0", marginTop: "81.19px" }} {...{ timeout: 1000 }} >
             <Stack>
@@ -36,35 +38,41 @@ export const LoginSingUp = () => {
                     </Card.Header>
                     <Card.Body>
                         {qrCodeRead ?
-                            <QRCodeForm singUpValues={singUpValues} qrCodeRef={qrCodeRef} qrCodeValue={qrCodeValue} />
+                            <QRCodeForm singUpValues={singUpValues} copyQRCodeValue={copyQRCodeValue} qrCodeRef={qrCodeRef} qrCodeValue={qrCodeValue} />
                             : loginSingUp == "login" ?
                                 <LoginForm
                                     formRef={loginRef}
                                     qrCodeReadCallback={() => setQrCodeRead(true)}
-                                    setSingUpValuesCallback={(value) => setSingUpValues(value)} /> :
+                                    setSingUpValuesCallback={(value) => setSingUpValues(value)}
+                                    setLoadingCallback={(value) => setLoadingButton(value)}
+                                /> :
                                 <SingUpForm
                                     formRef={formRef}
                                     qrCodeReadCallback={() => setQrCodeRead(true)}
                                     setQrCodeValueCallback={(value) => setQrCodeValue(value)}
                                     setQrCodeReadCallback={(value) => setQrCodeRead(value)}
                                     setSingUpValuesCallback={(value) => setSingUpValues(value)}
+                                    setCopyQRCodeValueCallback={(value) => setCopyQRCodeValue(value)}
+                                    setLoadingCallback={(value) => setLoadingButton(value)}
                                 />
                         }
                     </Card.Body>
                     <Card.Footer justifyContent="space-between">
-                        {!qrCodeRead && <Button disabled={disabledButton} color={"white"} background={theme.palette.mode == "dark" ? "cyan.800" : "purple.800"} variant="solid"
+                        {!qrCodeRead && <Button disabled={loadingButton} color={"white"} background={theme.palette.mode == "dark" ? "cyan.800" : "purple.800"} variant="solid"
                             onClick={() => {
                                 setLoginSingUp(loginSingUp == "login" ? "singup" : "login")
                             }}
                         >{loginSingUp == "login" ? "Realizar cadastro" : "Login"}</Button>}
-                        {!qrCodeRead && <Button disabled={disabledButton} color={"white"} background={theme.palette.mode == "dark" ? "purple.800" : "cyan.800"} variant="solid"
+                        {!qrCodeRead && <Button disabled={loadingButton} color={"white"} background={theme.palette.mode == "dark" ? "purple.800" : "cyan.800"} variant="solid"
                             onClick={() => {
-                                setDisabledButton(true)
+                                setLoadingButton(true)
                                 if (loginSingUp == "login")
                                     loginRef.current && loginRef.current.submitForm()
                                 else
                                     formRef.current && formRef.current.submitForm()
                             }}
+                            loading={loadingButton}
+                            loadingText="Carregando..."
                         >{loginSingUp == "login" ? "Login" : "Cadastre-se"}</Button>}
 
                     </Card.Footer>

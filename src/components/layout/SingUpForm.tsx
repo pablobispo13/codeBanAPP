@@ -40,8 +40,6 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
                         .oneOf([Yup.ref("password")], "As senhas devem coincidir")
                         .required("Confirmação de senha é obrigatória"),
                 })}
-
-
                 onSubmit={(values) => {
                     setLoadingCallback(true)
                     let newValues = {

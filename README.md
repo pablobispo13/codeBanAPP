@@ -1,50 +1,47 @@
-# React + TypeScript + Vite
+#🚀 CodeBan
+Este projeto é uma aplicação de Kanban utilizando **React**, **TypeScript**, e **Vite**. A aplicação é frontend e pode ser integrada com uma API para gerenciamento de tarefas, mas o foco aqui está na configuração do frontend com Vite e React.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##📌 Requisitos
+Antes de executar o projeto, certifique-se de ter instalado:
 
-Currently, two official plugins are available:
+- [Node.js (versão 16+)](https://nodejs.org/pt)
+- [npm](https://www.npmjs.com/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##🔧 Instalação
+Clone o repositório:
 
-## Expanding the ESLint configuration
+```sh
+git clone https://github.com/pablobispo13/codeBanAPP.git
+cd codeBanAPP
+```
+Instale as dependências utilizando Yarn ou npm:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```sh
+npm install
+```
+##▶️ Executando o Frontend Localmente
+Para iniciar a aplicação localmente, execute:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+##🧩 Estrutura do Projeto
+- src/: Contém todos os arquivos de código fonte do projeto.
+    - components/: Componentes React reutilizáveis.
+    - hooks/: Hooks personalizados.
+    - pages/: Páginas da aplicação (ex: Home, Board).
+    - services/: Funções para interação com a API.
+    - App.tsx: Componente principal da aplicação.
+    - index.tsx: Arquivo de entrada que monta a aplicação no DOM.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+##⚙️ Dependências
+Certifique-se de ter as dependências necessárias instaladas:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- React para construção da UI.
+- TypeScript para tipagem estática.
+- Vite como bundler.
+- Axios (ou Fetch) para requisições à API.
+
+📚 Documentação
+A documentação da API integrada pode ser acessada em [Documentação da API](https://apicodeban.vercel.app/docs) .

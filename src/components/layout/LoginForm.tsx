@@ -6,22 +6,16 @@ import sha256 from 'crypto-js/sha256';
 import { toast } from "react-toastify";
 
 // Types
-interface SingUpFormType {
+interface LoginFormType {
     formRef: any,
     qrCodeReadCallback?: () => void;
-    setQrCodeReadCallback?: (value: boolean) => void;
-    setQrCodeValueCallback?: (value: string) => void;
-    setCopyQRCodeValueCallback?: (value: string) => void;
     setSingUpValuesCallback?: (value: { name?: string, email?: string }) => void;
     setLoadingCallback?: (value: boolean) => void;
 }
 
-export const SingUpForm: React.FC<SingUpFormType> = ({
+export const LoginForm: React.FC<LoginFormType> = ({
     formRef,
     qrCodeReadCallback = () => { },
-    setQrCodeReadCallback = () => { },
-    setQrCodeValueCallback = () => { },
-    setCopyQRCodeValueCallback = () => { },
     setSingUpValuesCallback = () => { },
     setLoadingCallback = () => { }
 }) => {
@@ -29,40 +23,30 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
         <Container>
             <Formik
                 innerRef={formRef}
-                initialValues={{ name: "", email: "", password: "", confirmPassword: "" }}
+                initialValues={{ email: "", password: "", }}
                 validationSchema={Yup.object({
-                    name: Yup.string().required("Nome é obrigatório"),
                     email: Yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
                     password: Yup.string()
                         .min(6, "A senha deve ter pelo menos 6 caracteres")
                         .required("Senha é obrigatória"),
-                    confirmPassword: Yup.string()
-                        .oneOf([Yup.ref("password")], "As senhas devem coincidir")
-                        .required("Confirmação de senha é obrigatória"),
+
                 })}
-
-
                 onSubmit={(values) => {
                     setLoadingCallback(true)
                     let newValues = {
-                        name: values.name,
                         email: values.email,
                         password: sha256(values.password).toString()
                     }
-                    api.post("/auth/register", newValues)
+                    api.post("/auth/login", newValues)
                         .then((response) => {
                             if (response.data.success == false) {
                                 toast.error(response.data.message)
                                 setLoadingCallback(false)
                             } else {
+                                toast.info(response.data.message)
                                 setSingUpValuesCallback({
-                                    name: values.name,
                                     email: values.email,
                                 })
-                                toast.success(response.data.message)
-                                setQrCodeValueCallback(response.data.data.qr_code_url)
-                                setCopyQRCodeValueCallback(response.data.data.qrcode_url_value)
-                                setQrCodeReadCallback(true)
                                 qrCodeReadCallback()
                                 setLoadingCallback(false)
                             }
@@ -77,15 +61,6 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
                             }
                         }}
                     >
-                        <Field
-                            as={TextField}
-                            label="Nome"
-                            name="name"
-                            fullWidth
-                            margin="normal"
-                            error={touched.name && Boolean(errors.name)}
-                            helperText={touched.name && errors.name}
-                        />
                         <Field
                             as={TextField}
                             label="E-mail"
@@ -105,16 +80,6 @@ export const SingUpForm: React.FC<SingUpFormType> = ({
                             margin="normal"
                             error={touched.password && Boolean(errors.password)}
                             helperText={touched.password && errors.password}
-                        />
-                        <Field
-                            as={TextField}
-                            label="Confirme a Senha"
-                            name="confirmPassword"
-                            type="password"
-                            fullWidth
-                            margin="normal"
-                            error={touched.confirmPassword && Boolean(errors.confirmPassword)}
-                            helperText={touched.confirmPassword && errors.confirmPassword}
                         />
                     </Form>
                 )}

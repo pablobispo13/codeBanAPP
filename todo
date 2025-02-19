@@ -1,4 +1,0 @@
-// TODO: É necessário separar os componentes que serão utilizados tanto na tela inicial como na administração como a NavBar
-// TODO: É necessário criar a pagina de login e atrelar a tela de cadastro.
-// TODO: Adicionar validação para verificar se existe token de administração e posteriomente se a sessão esta ativa
-// TODO: Criar acesso utilizando o token e definir se ele ira para a tela de login/cadatro ou para a tela administrativa.

@@ -6,7 +6,7 @@ import React, {
   SetStateAction,
 } from "react";
 
-type MenuType = "singup";
+type MenuType = "singup" | "home";
 
 interface MenuContextType {
   value: MenuType;

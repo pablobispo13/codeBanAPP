@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 //Components
 import { Stack } from "@mui/material";
@@ -9,16 +9,12 @@ import "./css/main.css";
 //Service
 import { useTheme } from "@mui/material";
 
-// Context
-import { MenuContext } from "../../../context/MenuContext";
-import { SingUp } from "../../pages/SingUp";
-
 // Pages
+import { LoginSingUp } from "../LoginSingUp";
 
-export const Content = () => {
+export const LoginSingUpBackground = () => {
   // Initiate libraries
   const theme = useTheme();
-  const menuContext = useContext(MenuContext);
 
   // UseStates, UseEffects & functions
 
@@ -53,9 +49,7 @@ export const Content = () => {
       <Stack className="row banner" sx={{ filter: "blur(0px)" }}>
         <Stack className="banner-text">
           <Stack className="banner-text">
-            {/* Home area */}
-            {menuContext?.value == "singup" && <SingUp />}
-
+            <LoginSingUp />
           </Stack>
         </Stack>
       </Stack>

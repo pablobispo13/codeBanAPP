@@ -65,7 +65,6 @@ export const LoginSingUp = () => {
                         >{loginSingUp == "login" ? "Realizar cadastro" : "Login"}</Button>}
                         {!qrCodeRead && <Button disabled={loadingButton} color={"white"} background={theme.palette.mode == "dark" ? "purple.800" : "cyan.800"} variant="solid"
                             onClick={() => {
-                                setLoadingButton(true)
                                 if (loginSingUp == "login")
                                     loginRef.current && loginRef.current.submitForm()
                                 else
